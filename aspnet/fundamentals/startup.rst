@@ -1,3 +1,5 @@
+:version: 1.0.0-rc1
+
 .. _application-startup:
 
 Application Startup
@@ -52,7 +54,7 @@ Just as with ``Configure``, it is recommended that features that require substan
 
 Adding services to the services container makes them available within your application via :doc:`dependency injection <dependency-injection>`. Just as the ``Startup`` class is able to specify dependencies its methods require as parameters, rather than hard-coding to a specific implementation, so too can your middleware, MVC controllers and other classes in your application.
 
-The ``ConfigureServices`` method is also where you should add configuration option classes, like ``AppSettings`` in the example above, that you would like to have available in your application. See the :doc:`configuration` topic to learn more about configuring options.
+The ``ConfigureServices`` method is also where you should add configuration option classes that you would like to have available in your application. See the :doc:`configuration` topic to learn more about configuring options.
 
 Services Available in Startup
 -----------------------------
@@ -61,11 +63,8 @@ ASP.NET Core provides certain application services and objects during your appli
 IApplicationBuilder
   Used to build the application request pipeline. Available only to the ``Configure`` method in ``Startup``. Learn more about :doc:`request-features`.
 
-IApplicationEnvironment
-  Provides access to the application properties, such as ``ApplicationName``, ``ApplicationVersion``, and ``ApplicationBasePath``. Available to the ``Startup`` constructor and ``Configure`` method.
-
 IHostingEnvironment
-  Provides the current ``EnvironmentName``, ``WebRootPath``, and web root file provider. Available to the ``Startup`` constructor and ``Configure`` method.
+  Provides the current ``EnvironmentName``, ``ContentRootPath``, ``WebRootPath``, and web root file provider. Available to the ``Startup`` constructor and ``Configure`` method.
 
 ILoggerFactory
   Provides a mechanism for creating loggers. Available to the ``Startup`` constructor and ``Configure`` method. Learn more about :doc:`logging`.
@@ -76,7 +75,6 @@ IServiceCollection
 Looking at each method in the ``Startup`` class in the order in which they are called, the following services may be requested as parameters:
 
 Startup Constructor
-- ``IApplicationEnvironment``
 - ``IHostingEnvironment``
 - ``ILoggerFactory``
 
@@ -85,7 +83,6 @@ ConfigureServices
 
 Configure
 - ``IApplicationBuilder``
-- ``IApplicationEnvironment``
 - ``IHostingEnvironment``
 - ``ILoggerFactory``
 
@@ -98,5 +95,5 @@ Additional Resources
 - :doc:`middleware`
 - :doc:`owin`
 
-.. _IApplicationBuilder: https://docs.asp.net/projects/api/en/latest/autoapi/Microsoft/AspNet/Builder/IApplicationBuilder/index.html
+.. _IApplicationBuilder: https://docs.asp.net/projects/api/en/latest/autoapi/Microsoft/AspNetCore/Builder/IApplicationBuilder/index.html
 .. _IServiceCollection: https://docs.asp.net/projects/api/en/latest/autoapi/Microsoft/Extensions/DependencyInjection/IServiceCollection/index.html
