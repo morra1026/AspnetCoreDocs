@@ -3,8 +3,10 @@ Routing
 By `Ryan Nowak`_, `Steve Smith`_, and `Rick Anderson`_
 
 Routing is used to map requests to route handlers. Routes are configured when the application starts up, and can extract values from the URL that will be used for request processing. Routing functionality is also responsible for generating links using the defined routes in ASP.NET apps.
+Routing은 request들을 route handler들에 매핑하는데 사용된다. Route들은 application이 시작될 때 설정되고, URL에서 request를 처리하는데 사용될 value들을 추출 할 수 있다. Routing 기능은 또한 ASP.NET app에서 정의된 route들을 사용하여 link 생성을 책임진다.
 
 This document covers the low level ASP.NET Core routing. For ASP.NET Core MVC routing, see :doc:`/mvc/controllers/routing`
+이 문서는 low level ASP.NET Core routing을 설명한다. ASP.NET Core MVC routing에 대해서는 :doc:`/mvc/controllers/routing` 을 참조하라.
 
 .. contents:: Sections
   :local:
@@ -16,25 +18,33 @@ Routing basics
 ----------------
 
 Routing uses *routes* (implementations of :dn:iface:`~Microsoft.AspNetCore.Routing.IRouter`) to:
+Routing은 *routes* (:dn:iface:`~Microsoft.AspNetCore.Routing.IRouter` 의 구현)을 사용하여 다음과 같은 일을 한다 :
 
 - map incoming requests to *route handlers*
+- 들어오는 request들을 *route handlers* 에 맵핑
 - generate URLs used in responses
+- response에 사용되는URL을 생성 
 
 Generally an app has a single collection of routes. The route collection is processed in order. Requests look for a match in the route collection by :ref:`URL-Matching-ref`. Responses use routing to generate URLs.
+일반적으로 app은 route들을 모아놓은 하나의 collection을 가진다. Route collection은 순서대로 처리된다. Request들은 :ref:`URL-Matching-ref` 에 의해 route collection에서 일치하는 것을 찾는다. Response는 URL 생성에 routing을 사용한다.
 
 Routing is connected to the :doc:`middleware <middleware>` pipeline by the :dn:class:`~Microsoft.AspNetCore.Builder.RouterMiddleware` class. :doc:`ASP.NET MVC </mvc/overview>` adds routing to the middleware pipeline as part of its configuration. To learn about using routing as a standalone component, see using-routing-middleware_.
+Routing은 :dn:class:`~Microsoft.AspNetCore.Builder.RouterMiddleware` class에 의해서 :doc:`middleware <middleware>` pipeline에 연결된다. :doc:`ASP.NET MVC </mvc/overview>` 는 configuration을 구성하면서 routing을 middleware pipeline에 추가한다. 독립적인 component로 routing을 사용하는것데 대해 보려면 using-routing-middleware_을 참조하라.
 
 .. _URL-Matching-ref:
 
 URL matching
 ^^^^^^^^^^^^
 URL matching is the process by which routing dispatches an incoming request to a *handler*. This process is generally based on data in the URL path, but can be extended to consider any data in the request. The ability to dispatch requests to separate handlers is key to scaling the size and complexity of an application.
+URL matching은 routing이 들어오는 request를 *handler* 에 전달하는 과정이다. 이 처리는 일반적으로 URL path 정보에 기반하지만 request의 어떤 정보든 사용될 수 있다. 각각의 handler에 request를 전달하는 기능은 application의 복잡성과 크기를 스켕일링하는데 핵심이다.
 
 Incoming requests enter the :dn:cls:`~Microsoft.AspNetCore.Builder.RouterMiddleware` which calls the :dn:method:`~Microsoft.AspNetCore.Routing.IRouter.RouteAsync` method on each route in sequence. The :dn:iface:`~Microsoft.AspNetCore.Routing.IRouter` instance chooses whether to *handle* the request by setting the :dn:cls:`~Microsoft.AspNetCore.Routing.RouteContext` :dn:prop:`~Microsoft.AspNetCore.Routing.RouteContext.Handler` to a non-null :dn:delegate:`~Microsoft.AspNetCore.Http.RequestDelegate`. If a handler is set a route, it will be invoked to process the request and no further routes will be processed. If all routes are executed, and no handler is found for a request, the middleware calls *next* and the next middleware in the request pipeline is invoked.
 
 The primary input to ``RouteAsync`` is the :dn:cls:`~Microsoft.AspNetCore.Routing.RouteContext` :dn:prop:`~Microsoft.AspNetCore.Routing.RouteContext.HttpContext` associated with the current request. The ``RouteContext.Handler`` and :dn:cls:`~Microsoft.AspNetCore.Routing.RouteContext` :dn:prop:`~Microsoft.AspNetCore.Routing.RouteContext.RouteData` are outputs that will be set after a successful match.
+``RouteAsync`` 의 주요 입력값은 현재 request와 관련된 :dn:cls:`~Microsoft.AspNetCore.Routing.RouteContext`.:dn:prop:`~Microsoft.AspNetCore.Routing.RouteContext.HttpContext` 이다. ``RouteContext.Handler`` 와 :dn:cls:`~Microsoft.AspNetCore.Routing.RouteContext`.:dn:prop:`~Microsoft.AspNetCore.Routing.RouteContext.RouteData` 는 매칭이 성공되면 설정되는 출력값이다.
 
 A successful match during ``RouteAsync`` also will set the properties of the ``RouteContext.RouteData`` to appropriate values based on the request processing that was done. The ``RouteContext.RouteData`` contains important state information about the *result* of a route when it successfully matches a request.
+``RouteAsync``를 호출하는동안 매칭이 성공하면 ``RouteContext.RouteData`` 의 propertie들 또한 완료된 request 처리에 기반한 적당한 값들로 설정된다. ``RouteContext.RouteData`` 는 request을 성공적으로 매칭시킨 route의 *result* 에 대한 중요한 상태정보를 담는다.
 
 :dn:cls:`~Microsoft.AspNetCore.Routing.RouteData` :dn:prop:`~Microsoft.AspNetCore.Routing.RouteData.Values` is a dictionary of *route values* produced from the route. These values are usually determined by tokenizing the URL, and can be used to accept user input, or to make further dispatching decisions inside the application.
 
@@ -70,12 +80,17 @@ The :dn:cls:`~Microsoft.AspNetCore.Routing.VirtualPathData` :dn:prop:`~Microsoft
 Creating routes
 ^^^^^^^^^^^^^^^
 Routing provides the :dn:cls:`~Microsoft.AspNetCore.Routing.Route` class as the standard implementation of ``IRouter``. ``Route`` uses the *route template* syntax to define patterns that will match against the URL path when :dn:method:`~Microsoft.AspNetCore.Routing.IRouter.RouteAsync` is called. ``Route`` will use the same route template to generate a URL when :dn:method:`~Microsoft.AspNetCore.Routing.IRouter.GetVirtualPath` is called.
+Routing은 ``IRouter``의 표준 구현으로 :dn:cls:`~Microsoft.AspNetCore.Routing.Route` class를 제공한다. ``Route`` uses the *route template* syntax to define patterns that will match against the URL path when :dn:method:`~Microsoft.AspNetCore.Routing.IRouter.RouteAsync` is called. ``Route`` will use the same route template to generate a URL when :dn:method:`~Microsoft.AspNetCore.Routing.IRouter.GetVirtualPath` is called.
+
 
 Most applications will create routes by calling ``MapRoute`` or one of the similar extension methods defined on :dn:iface:`~Microsoft.AspNetCore.Routing.IRouteBuilder`. All of these methods will create an instance of ``Route`` and add it to the route collection.
+대부분의 application들은 ``MapRoute`` 나 :dn:iface:`~Microsoft.AspNetCore.Routing.IRouteBuilder` 에 정의된 비슷한 extension method들 중 하나를 호출하여 route들을 만들것이다. 이 method들 전부는 ``Route`` 의 instance를 만들고 route collection에 추가 할 것이다.
 
 .. note:: :dn:method:`~Microsoft.AspNetCore.Builder.MapRouteRouteBuilderExtensions.MapRoute` doesn't take a route handler parameter - it only adds routes that will be handled by the :dn:prop:`~Microsoft.AspNetCore.Routing.IRouteBuilder.DefaultHandler`. Since the default handler is an :dn:iface:`~Microsoft.AspNetCore.Routing.IRouter`, it may decide not to handle the request. For example, ASP.NET MVC is typically configured as a default handler that only handles requests that match an available controller and action. To learn more about routing to MVC, see :doc:`/mvc/controllers/routing`.
+.. note:: :dn:method:`~Microsoft.AspNetCore.Builder.MapRouteRouteBuilderExtensions.MapRoute` 는 route handler parameter를 가지지 않는다. - :dn:prop:`~Microsoft.AspNetCore.Routing.IRouteBuilder.DefaultHandler` 에 의해 다뤄지는 route들을 추가하기만 한다. Since the default handler is an :dn:iface:`~Microsoft.AspNetCore.Routing.IRouter`, it may decide not to handle the request. 예를들어, ASP.NET MVC는 일반적으로 오직 가능한 controller와 action에 매치되는 request들을 다루는 기본 handler로 구성된다. To learn more about routing to MVC, see :doc:`/mvc/controllers/routing`.
 
 This is an example of a ``MapRoute`` call used by a typical ASP.NET MVC route definition:
+다음예제는 일반적인 ASP.NET MVC route 정의를 사용하는 ``MapRoute`` call을 보여준다 :
 
 .. code-block:: c#
 
@@ -84,6 +99,7 @@ This is an example of a ``MapRoute`` call used by a typical ASP.NET MVC route de
         template: "{controller=Home}/{action=Index}/{id?}");
 
 This template will match a URL path like ``/Products/Details/17`` and extract the route values ``{ controller = Products, action = Details, id = 17 }``. The route values are determined by splitting the URL path into segments, and matching each segment with the *route parameter* name in the route template. Route parameters are named. They are defined by enclosing the parameter name in braces ``{ }``.
+이 template은 ``/Products/Details/17`` 과 같은 URL path를 매치하고  route values로 ``{ controller = Products, action = Details, id = 17 }`` 을 추출 할 것이다. Route values는 segment로 분할된 URL path에 의해 결정되고, 각 segment는 route template의 *route parameter* 이름과 매칭된다. Route parameter들은 braces ``{ }`` 에 둘러 쌓인 parameter name 으로 정의되어 이름이 지어진다.
 
 The template above could also match the URL path ``/`` and would produce the values ``{ controller = Home, action = Index }``. This happens because the ``{controller}`` and ``{action}`` route parameters have default values, and the ``id`` route parameter is optional. An equals ``=`` sign followed by a value after the route parameter name defines a default value for the parameter. A question mark ``?`` after the route parameter name defines the parameter as optional. Route parameters with a default value *always* produce a route value when the route matches - optional parameters will not produce a route value if there was no corresponding URL path segment.
 
