@@ -140,7 +140,7 @@ Web root
 --------
 
 The web root of your app is the directory in your project for public, static resources like css, js, and image files. The static files middleware will only serve files from the web root directory (and sub-directories) by default. The web root path defaults to `<content root>/wwwroot`, but you can specify a different location using the `WebHostBuilder`.
-App의 Web root는 css, js, and image file들과 같은 public, static resource들 위한 project의 directory입니다. Static files middleware는 오직 기본적으로 web root directory (그리고 하위 directorie들)에서 file들을 제공합니다. Web root path 기본 값은 `<content root>/wwwroot`이지만, `WebHostBuilder`를 사용하여 다른 위치를 지정할 수 있습니다.
+App의 Web root는 css, js, and image file들과 같은 public, static resource들 위한 project의 directory입니다. Static files middleware는 오직 기본적으로 web root directory (그리고 하위 directorie들)에서 file들을 제공합니다. Web root path 기본 값은 `<content root>/wwwroot` 이지만, `WebHostBuilder` 를 사용하여 다른 위치를 지정할 수 있습니다.
 
 Configuration
 -------------
