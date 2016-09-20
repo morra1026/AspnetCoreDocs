@@ -134,7 +134,7 @@ The ``ViewData`` dictionary object contains data that will be passed to the view
   - Tap **Add**
 
 You'll create a loop in the *Welcome.cshtml* view template that displays "Hello" ``NumTimes``. Replace the contents of *Views/HelloWorld/Welcome.cshtml* with the following:
-*Welcome.cshtml* view template 안에 "Hello" ``NumTimes``를 표시하는 루프를 만들었다. Replace the contents of *Views/HelloWorld/Welcome.cshtml* with the following:
+*Welcome.cshtml* view template 안에 "Hello" ``NumTimes`` 를 표시하는 루프를 만들었다. Replace the contents of *Views/HelloWorld/Welcome.cshtml* with the following:
 
 .. literalinclude:: start-mvc/sample/src/MvcMovie/Views/HelloWorld/Welcome.cshtml
   :language: none
