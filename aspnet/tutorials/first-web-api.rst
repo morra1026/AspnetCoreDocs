@@ -4,10 +4,13 @@ Building Your First Web API with ASP.NET Core MVC and Visual Studio
 By `Mike Wasson`_ and `Rick Anderson`_
 
 HTTP is not just for serving up web pages. It’s also a powerful platform for building APIs that expose services and data. HTTP is simple, flexible, and ubiquitous. Almost any platform that you can think of has an HTTP library, so HTTP services can reach a broad range of clients, including browsers, mobile devices, and traditional desktop apps.
+HTTP는 단순히 웹페이지 만을 제공하지 않는다. HTTP는 service들과  data를 제공하는 API를 만들기 위한 강력한 플랫폼이다. HTTP는 간단하고, 유연하며, 그리고 어디에나 있다. 당신이 생각하는 대부분의 플랫폼들은 HTTP library를 가지고 있어서 HTTP service들은 browsers, mobile devices, 그리고 전통적인 desktop apps 를 포함한 다양한 client들에 연결 될 수 있다.
 
 In this tutorial, you’ll build a simple web API for managing a list of "to-do" items. You won’t build any UI in this tutorial.
+이 튜토리얼에서, 당신은 "to-do" 항목 리스트를 관리하는 간단한 web API를 만들것이다. 이 튜토리얼에는 UI가 포함되지 않는다.
 
 
+ASP.NET Core has built-in support for MVC building Web APIs. Unifying the two frameworks makes it simpler to build apps that include both UI (HTML) and APIs, because now they share the same code base and pipeline.
 ASP.NET Core has built-in support for MVC building Web APIs. Unifying the two frameworks makes it simpler to build apps that include both UI (HTML) and APIs, because now they share the same code base and pipeline.
 
 .. note:: If you are porting an existing Web API app to ASP.NET Core, see :doc:`/migration/webapi`

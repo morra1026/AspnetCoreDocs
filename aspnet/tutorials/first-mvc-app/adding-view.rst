@@ -6,8 +6,10 @@ By `Rick Anderson`_
 In this section you're going to modify the ``HelloWorldController`` class to use Razor view template files to cleanly encapsulate the process of generating HTML responses to a client.
 
 You'll create a view template file using Razor. Razor-based view templates have a *.cshtml* file extension, and provide an elegant way to create HTML output using C#. Razor seamlessly blends C# and HTML, minimizing the number of characters and keystrokes required when writing a view template, and enables a fast, fluid coding workflow.
+Razor를 사용하여 view template 파일을 만들것이다. Razor-based view template들은 *.cshtml* 파일확장자를 가지고, C#을 사용하여 HTML 출력을 만드는 우아한 방법을 제공한다. Razor는 C# 과 HTML을 섞어서, view template을 작성할때 적은수의 문자와 키입력을 요구하며, 빠르고, 유동적인 코딩 작업을 허용한다.
 
 Currently the ``Index`` method returns a string with a message that is hard-coded in the controller class. Change the ``Index`` method to return a View object, as shown in the following code:
+현재 ``Index`` method는 controller class에 하드코딩된 메세지 문자열을 반환한다. 다음의 코드가 보여주는 것처럼,``Index`` method가 View object를 반환하도록 바꿔보자 :
 
 .. literalinclude:: start-mvc/sample/src/MvcMovie/Controllers/HelloWorldController.cs
   :language: c#
@@ -103,12 +105,17 @@ Passing Data from the Controller to the View
 ----------------------------------------------
 
 Before we go to a database and talk about models, though, let's first talk about passing information from the controller to a view. Controller actions are invoked in response to an incoming URL request. A controller class is where you write the code that handles the incoming browser requests, retrieves data from a database, and ultimately decides what type of response to send back to the browser. View templates can then be used from a controller to generate and format an HTML response to the browser.
+Database와 model을 이야기 하기 전에, 먼저 controller에서 view로 정보를 전달하는 것에 대하여 이야기 해 보자. Controller action들은 들어오는 URL request의 response 안에서 호출된다. Controller class(당신이 작성한 들어오는 browser request들을 처리하는 코드에 있는)는 database에서 data를 검색하고, 궁극적으로는 어떤 타입의 response을 browser로 되돌려 보낼지 결정한다. View templates can then be used from a controller to generate and format an HTML response to the browser.
 
 Controllers are responsible for providing whatever data or objects are required in order for a view template to render a response to the browser. A best practice: A view template should never perform business logic or interact with a database directly. Instead, a view template should work only with the data that's provided to it by the controller. Maintaining this "separation of concerns" helps keep your code clean, testable and more maintainable.
+Controller들은 browser에 response을 표현하는 view template을 위해 요청에서 요구하는 data 또는 object들 무엇이든지 제공할 책임이 있다. 가장 좋은 방법: view template은 절대로 business logic을 수행하거나 database와 직접적으로 상호작용하면 안된다. 대신에, view template은 controller에 의해 제공되는 data로만 작업해야 한다. "관심사의 분리(separation of concerns)"를 유지하는 것은 당신의 코드를 깔끔하고 테스트와 유지보수를 용이하게 돕느다.
 
 Currently, the ``Welcome`` method in the ``HelloWorldController`` class takes a ``name`` and a ``ID`` parameter and then outputs the values directly to the browser. Rather than have the controller render this response as a string, let’s change the controller to use a view template instead. The view template will generate a dynamic response, which means that you need to pass appropriate bits of data from the controller to the view in order to generate the response. You can do this by having the controller put the dynamic data (parameters) that the view template needs in a ``ViewData`` dictionary that the view template can then access.
+Currently, the ``Welcome`` method in the ``HelloWorldController`` class takes a ``name`` and a ``ID`` parameter and then outputs the values directly to the browser. Rather than have the controller render this response as a string, let’s change the controller to use a view template instead. View template은 동적인 response를 만들것이고, 이 말은 response를 만들기 위해 order안에서 적당한 data를 controller로부터 view로 전달할 필요가 있다는 것이다. 이 것은 controller가 view template이 필요로하는 동적인 data (parameters)를 view template이 접근할 수 있는``ViewData`` dictionary에 넣는 방법으로 할 수 있다.
 
 Return to the *HelloWorldController.cs* file and change the ``Welcome`` method to add a ``Message`` and ``NumTimes`` value to the ``ViewData`` dictionary. The ``ViewData`` dictionary is a dynamic object, which means you can put whatever you want in to it; the ``ViewData`` object has no defined properties until you put something inside it. The :doc:`MVC model binding system  </mvc/models/model-binding>` automatically maps the named parameters (``name`` and ``numTimes``) from the query string in the address bar to parameters in your method. The complete *HelloWorldController.cs* file looks like this:
+Return to the *HelloWorldController.cs* file and change the ``Welcome`` method to add a ``Message`` and ``NumTimes`` value to the ``ViewData`` dictionary. ``ViewData`` dictionary는 동적인 객체이고, 이 말은 원하는 무엇이든 넣을수 있다는 것이다; ``ViewData`` object는  어떤것을 안에 넣기 전까지 정의된 propertie들이 없다. The :doc:`MVC model binding system  </mvc/models/model-binding>` 은 자동적으로 주소표시줄의 query string에서 parameter들 (``name`` and ``numTimes``)을 당신의 method 안에 parameter들로 배치한다. 완성된 *HelloWorldController.cs* file 은 다음과 같다:
+
 
 .. literalinclude:: start-mvc/sample/src/MvcMovie/Controllers/HelloWorldController.cs
   :language: c#
@@ -116,6 +123,7 @@ Return to the *HelloWorldController.cs* file and change the ``Welcome`` method t
   :end-before: #endregion
 
 The ``ViewData`` dictionary object contains data that will be passed to the view. Next, you need a Welcome view template.
+``ViewData`` dictionary object는 view에 전달될 data를 포함한다. 다음으로, Welcome view template이 필요하다.
 
 - Right click on the *Views/HelloWorld* folder, and then **Add > New Item**.
 - In the **Add New Item - MvcMovie** dialog
@@ -126,6 +134,7 @@ The ``ViewData`` dictionary object contains data that will be passed to the view
   - Tap **Add**
 
 You'll create a loop in the *Welcome.cshtml* view template that displays "Hello" ``NumTimes``. Replace the contents of *Views/HelloWorld/Welcome.cshtml* with the following:
+*Welcome.cshtml* view template 안에 "Hello" ``NumTimes``를 표시하는 루프를 만들었다. Replace the contents of *Views/HelloWorld/Welcome.cshtml* with the following:
 
 .. literalinclude:: start-mvc/sample/src/MvcMovie/Views/HelloWorld/Welcome.cshtml
   :language: none
@@ -135,6 +144,7 @@ Save your changes and browse to the following URL:
 \http://localhost:xxxx/HelloWorld/Welcome?name=Rick&numtimes=4
 
 Data is taken from the URL and passed to the controller using the :doc:`MVC model binder </mvc/models/model-binding>` . The controller packages the data into a ``ViewData`` dictionary and passes that object to the view. The view then renders the data as HTML to the browser.
+Data는 :doc:`MVC model binder </mvc/models/model-binding>` 를 사용하여 URL로 부터 가져왔고 controller로 전달되었다. Controller는 ``ViewData`` dictionary 안으로 data를 포장하고 ``ViewData`` dictionary를 view로 전달한다. View는 그때 browser에 HTML로 data를 표현한다.
 
 .. image:: adding-view/_static/rick.png
 
