@@ -4,6 +4,7 @@ Working with SQL Server LocalDB
 By `Rick Anderson`_
 
 The ``ApplicationDbContext`` class handles the task of connecting to the database and mapping ``Movie`` objects to database records. The database context is registered with the :doc:`Dependency Injection  </fundamentals/dependency-injection>` container in the ``ConfigureServices`` method in the *Startup.cs* file:
+``ApplicationDbContext`` class는 database에 접속하는 작업과 ``Movie`` object들을 database record들로 맵핑하는 작업을 처리한다.Database context는 *Startup.cs* file의 ``ConfigureServices`` method에서 :doc:`Dependency Injection  </fundamentals/dependency-injection>` container로 등록된단. :
 
 .. literalinclude:: start-mvc/sample2/src/MvcMovie/Startup.cs
   :language: c#
@@ -12,6 +13,7 @@ The ``ApplicationDbContext`` class handles the task of connecting to the databas
   :dedent: 8
 
 The ASP.NET Core :doc:`Configuration </fundamentals/configuration>` system reads the ``ConnectionString``. For local development, it gets the connection string from the *appsettings.json* file:
+ASP.NET Core :doc:`Configuration </fundamentals/configuration>` system은 ``ConnectionString``을 읽어 온다. For local development, it gets the connection string from the *appsettings.json* file:
 
 .. literalinclude:: start-mvc/sample2/src/MvcMovie/appsettings.json
   :language: javascript
