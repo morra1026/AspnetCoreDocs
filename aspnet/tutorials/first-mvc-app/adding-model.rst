@@ -143,14 +143,19 @@ To Stop IIS Express:
   dotnet ef migrations add Initial
   dotnet ef database update
 
+.. note:: 위 명령은 프로젝트의 루트(Project.json이 있는 위치)에서 실행 해야 함.
+
 .. note:: If IIS-Express is running, you'll get the error *CS2012: Cannot open 'MvcMovie/bin/Debug/netcoreapp1.0/MvcMovie.dll' for writing -- 'The process cannot access the file 'MvcMovie/bin/Debug/netcoreapp1.0/MvcMovie.dll' because it is being used by another process.'*
 
 dotnet ef commands
 ^^^^^^^^^^^^^^^^^^^
 
 - ``dotnet`` (.NET Core) is a cross-platform implementation of .NET. You can read about it `here <http://go.microsoft.com/fwlink/?LinkID=517853>`__
+- ``dotnet`` (.NET Core)은 .NET의 cross-platform implementation이다. You can read about it `here <http://go.microsoft.com/fwlink/?LinkID=517853>`__
 - ``dotnet ef migrations add Initial`` Runs the Entity Framework .NET Core CLI migrations command and creates the initial migration. The parameter "Initial" is arbitrary, but customary for the first (*initial*) database migration. This operation creates the *Data/Migrations/<date-time>_Initial.cs* file containing the migration commands to add (or drop) the `Movie` table to the database
+- ``dotnet ef migrations add Initial`` 은 Entity Framework .NET Core CLI migrations command를 실행하고  initial migration을 만든다. "Initial" 매개변수는 임의의 값이지만, 첫번째(*initial*) database migration을 위한 관례다. 이 명령은 database에 `Movie` table을 추가(또는 삭제)하는 migration command들을 포함한 *Data/Migrations/<date-time>_Initial.cs* file을 만든다. 
 - ``dotnet ef database update``  Updates the database with the migration we just created
+- ``dotnet ef database update``는 방금 만든 migration으로 database를 업데이트 한다.
 
 Test the app
 ------------------
@@ -214,8 +219,10 @@ Open the *Controllers/MoviesController.cs* file and examine the generated ``Inde
   :dedent: 4
 
 The constructor uses :doc:`Dependency Injection  </fundamentals/dependency-injection>` to inject the database context into the controller. The database context is used in each of the `CRUD <https://en.wikipedia.org/wiki/Create,_read,_update_and_delete>`__ methods in the controller.
+생성자는 controller 안에 database context를 주입하기 위해 :doc:`Dependency Injection  </fundamentals/dependency-injection>` 을 사용한다. Database context는 controller의 각 `CRUD <https://en.wikipedia.org/wiki/Create,_read,_update_and_delete>`__ method들에서 사용된다.
 
 A request to the Movies controller returns all the entries in the ``Movies`` table and then passes the data to the ``Index`` view.
+Movies controller로의 request는 ``Movies`` table의 모든 항목을 반환하고 ``Index`` view로 data를 전달한다.
 
 .. _strongly-typed-models-keyword-label:
 
@@ -223,8 +230,10 @@ Strongly typed models and the @model keyword
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Earlier in this tutorial, you saw how a controller can pass data or objects to a view using the ``ViewData`` dictionary. The ``ViewData`` dictionary is a dynamic object that provides a convenient late-bound way to pass information to a view.
+이 튜토리얼의 앞부분에서, 어떻게 controller가 ``ViewData`` dictionary를 사용하여 data나 object들을 view로 전달 할 수 있는지 보았다. ``ViewData`` dictionary는 view에 정보를 전달하는 편리한 늦은 바운드 방법(late-bound way)을 제공하는 동적 object다.
 
 MVC also provides the ability to pass strongly typed objects to a view. This strongly typed approach enables better compile-time checking of your code and richer `IntelliSense <https://msdn.microsoft.com/en-us/library/hcw1s69b.aspx>`__ in Visual Studio (VS). The scaffolding mechanism in VS used this approach (that is, passing a strongly typed model) with the ``MoviesController`` class and views when it created the methods and views.
+MVC는 또한 view로 강력한 형식의 object들(strongly typed objects)를 전달하는 기능을 제공한다. 이 strongly typed 접근은 코드에 더 나은 compile-time checking과 Visual Studio (VS)의 풍부한 `IntelliSense <https://msdn.microsoft.com/en-us/library/hcw1s69b.aspx>`__ 를 할 수 있게 한다. VS의 scaffolding mechanism 은 method들과 view들을 만들때 ``MoviesController`` class와 view들로 이 방법(strongly typed model을 전달 하는 것)을 사용한다.
 
 Examine the generated ``Details`` method in the *Controllers/MoviesController.cs* file:
 
@@ -245,6 +254,7 @@ You could also pass in the ``id`` with a query string as follows:
 ``http://localhost:1234/movies/details?id=1``
 
 If a Movie is found, an instance of the ``Movie`` model is passed to the ``Details`` view:
+만약 Movie가 있다면(해당 ``id``를 가진), ``Movie`` model의 instance가 ``Details`` view로 전달된다 :
 
 .. code-block:: C#
 
@@ -259,14 +269,17 @@ Examine the contents of the *Views/Movies/Details.cshtml* file:
  :emphasize-lines: 1
 
 By including a ``@model`` statement at the top of the view file, you can specify the type of object that the view expects. When you created the movie controller, Visual Studio automatically included the following ``@model`` statement at the top of the *Details.cshtml* file:
+View file의 맨 위에서 ``@model``문을 포함시키므로서, view에서 예상하는 object의 타입을 지정 할 수 있다. Movie controller가 만들어질 때, Visual Studio는 자동적으로 *Details.cshtml* file의 맨 위에  다음의 ``@model``문을 포함시킨다 :
 
 .. code-block:: HTML
 
   @model MvcMovie.Models.Movie
 
 This ``@model`` directive allows you to access the movie that the controller passed to the view by using a ``Model`` object that's strongly typed. For example, in the *Details.cshtml* view, the code passes each movie field to the ``DisplayNameFor`` and ``DisplayFor`` HTML Helpers with the strongly typed ``Model`` object. The ``Create`` and ``Edit`` methods and views also pass a ``Movie`` model object.
+이 ``@model`` 지시자는 controller가 strongly typed인 ``Model`` object를 사용하여가 view로 전달하는 movie에 접근 가능하게 한다. 예를들어, *Details.cshtml* view에서, code는 strongly typed ``Model`` object로 각 movie field를 ``DisplayNameFor`` 와 ``DisplayFor`` HTML Helper들로 전달한다. ``Create`` 와 ``Edit`` method들 그리고 view들 또한 ``Movie`` model object를 전달한다.
 
 Examine the *Index.cshtml* view and the ``Index`` method in the Movies controller. Notice how the code creates a ``List`` object when it calls the View method. The code passes this ``Movies`` list from the ``Index`` action method to the view:
+Examine the *Index.cshtml* view and the ``Index`` method in the Movies controller. 코드가 View method를 호출할 때 어떻게 ``List`` object를 만드는지 주의하라. 코드는 ``Index`` action method로부터 view로 이 ``Movies`` list를 전달한다 :
 
 .. literalinclude:: start-mvc/sample2/src/MvcMovie/Controllers/MoviesController.cs
   :language: c#
@@ -275,6 +288,7 @@ Examine the *Index.cshtml* view and the ``Index`` method in the Movies controlle
   :dedent: 8
 
 When you created the movies controller, Visual Studio automatically included the following ``@model`` statement at the top of the *Index.cshtml* file:
+Movies controller를 만들었을 때, Visual Studio는 자동적으로 다음의 ``@model`` 문을 *Index.cshtml* file의 맨 위에 포함 시킨다:
 
 .. Copy Index.cshtml to IndexOriginal.cshtml
 
@@ -283,6 +297,7 @@ When you created the movies controller, Visual Studio automatically included the
  :lines: 1
 
 The ``@model`` directive allows you to access the list of movies that the controller passed to the view by using a ``Model`` object that's strongly typed. For example, in the *Index.cshtml* view, the code loops through the movies with a ``foreach`` statement over the strongly typed ``Model`` object:
+``@model`` 지시자는 controller가 strongly typed인 ``Model`` object를 사용하여 view로 전달한 movies list에 접근 가능하게 한다. 예를들어, *Index.cshtml* view에서, 코드는 strongly typed ``Model`` object을 통해 ``foreach`` 문으로 movie들을 순회한다 :
 
 .. Copy Index.cshtml to IndexOriginal.cshtml
 
