@@ -155,7 +155,7 @@ dotnet ef commands
 - ``dotnet ef migrations add Initial`` Runs the Entity Framework .NET Core CLI migrations command and creates the initial migration. The parameter "Initial" is arbitrary, but customary for the first (*initial*) database migration. This operation creates the *Data/Migrations/<date-time>_Initial.cs* file containing the migration commands to add (or drop) the `Movie` table to the database
 - ``dotnet ef migrations add Initial`` 은 Entity Framework .NET Core CLI migrations command를 실행하고  initial migration을 만든다. "Initial" 매개변수는 임의의 값이지만, 첫번째(*initial*) database migration을 위한 관례다. 이 명령은 database에 `Movie` table을 추가(또는 삭제)하는 migration command들을 포함한 *Data/Migrations/<date-time>_Initial.cs* file을 만든다. 
 - ``dotnet ef database update``  Updates the database with the migration we just created
-- ``dotnet ef database update``는 방금 만든 migration으로 database를 업데이트 한다.
+- ``dotnet ef database update`` 는 방금 만든 migration으로 database를 업데이트 한다.
 
 Test the app
 ------------------
@@ -254,7 +254,7 @@ You could also pass in the ``id`` with a query string as follows:
 ``http://localhost:1234/movies/details?id=1``
 
 If a Movie is found, an instance of the ``Movie`` model is passed to the ``Details`` view:
-만약 Movie가 있다면(해당 ``id``를 가진), ``Movie`` model의 instance가 ``Details`` view로 전달된다 :
+만약 Movie가 있다면(해당 ``id`` 를 가진), ``Movie`` model의 instance가 ``Details`` view로 전달된다 :
 
 .. code-block:: C#
 
@@ -269,7 +269,7 @@ Examine the contents of the *Views/Movies/Details.cshtml* file:
  :emphasize-lines: 1
 
 By including a ``@model`` statement at the top of the view file, you can specify the type of object that the view expects. When you created the movie controller, Visual Studio automatically included the following ``@model`` statement at the top of the *Details.cshtml* file:
-View file의 맨 위에서 ``@model``문을 포함시키므로서, view에서 예상하는 object의 타입을 지정 할 수 있다. Movie controller가 만들어질 때, Visual Studio는 자동적으로 *Details.cshtml* file의 맨 위에  다음의 ``@model``문을 포함시킨다 :
+View file의 맨 위에서 ``@model`` 문을 포함시키므로서, view에서 예상하는 object의 타입을 지정 할 수 있다. Movie controller가 만들어질 때, Visual Studio는 자동적으로 *Details.cshtml* file의 맨 위에  다음의 ``@model`` 문을 포함시킨다 :
 
 .. code-block:: HTML
 
