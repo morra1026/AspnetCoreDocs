@@ -94,7 +94,7 @@ Enabling directory browsing
 ---------------------------
 
 Directory browsing allows the user of your web app to see a list of directories and files within a specified directory. Directory browsing is disabled by default for security reasons (see Considerations_). To enable directory browsing, call the :dn:method:`~Microsoft.AspNetCore.Builder.DirectoryBrowserExtensions.UseDirectoryBrowser` extension method from  ``Startup.Configure``:
-디렉토리 브라우징을 통해 웹 어플리케이션의 사용자가 특정 디렉토리 내의 디렉토리들과 파일들의 목록을 확인 가능하도록 허용할 수 있습니다. 보안 때문에 디렉토리 브라우징은 기본적으로 꺼져있습니다. (고려사항_ 을 확인하세요.) 디렉토리 브라우징을 켜려면, ``Startup.Configure`` 에서 :dn:method:`~Microsoft.AspNetCore.Builder.DirectoryBrowserExtensions.UseDirectoryBrowser` 확장 메서드를 호출하세요.: 
+디렉토리 브라우징을 통해 웹 어플리케이션의 사용자가 특정 디렉토리 내의 디렉토리들과 파일들의 목록을 확인 가능하도록 허용할 수 있습니다. 보안 때문에 디렉토리 브라우징은 기본적으로 꺼져있습니다. (Considerations_ 을 확인하세요.) 디렉토리 브라우징을 켜려면, ``Startup.Configure`` 에서 :dn:method:`~Microsoft.AspNetCore.Builder.DirectoryBrowserExtensions.UseDirectoryBrowser` 확장 메서드를 호출하세요.: 
 
 .. literalinclude:: static-files/sample/StartupBrowse.cs
   :language: c#
@@ -119,7 +119,7 @@ The code above allows directory browsing of the *wwwroot/images* folder using th
 
 
 See Considerations_ on the security risks when enabling browsing.
-디렉토리 브라우징을 허용했을 때의 보안 위험에 대해서는 고려사항_ 을 확인하세요.
+디렉토리 브라우징을 허용했을 때의 보안 위험에 대해서는 Considerations_ 을 확인하세요.
 
 Note the two ``app.UseStaticFiles`` calls. The first one is required to serve the CSS, images and JavaScript in the *wwwroot* folder, and the second call for directory browsing of the *wwwroot/images* folder using the URL \http://<app>/MyImages:
 ``app.UseStaticFiles`` 를 두 번 호출한 점에 주의하십시오. 첫 번째 호출은 *wwwroot* 폴더 내의 CSS 와 이미지, JavaScript 를 제공하기 위한 것입니다. 두 번째 호출은 *wwwroot/images* 폴더에 대한 디렉토리 브라운징을 \http://<어플리케이션>/MyImages 을 통해 하기 위한 것입니다.: 
@@ -188,7 +188,7 @@ The following code enables static files, default files and  directory browsing:
   app.UseFileServer(enableDirectoryBrowsing: true);
 
 See Considerations_ on the security risks when enabling browsing. As with ``UseStaticFiles``, ``UseDefaultFiles``, and ``UseDirectoryBrowser``, if you wish to serve files that exist outside the ``web root``, you instantiate and configure an :dn:class:`~Microsoft.AspNetCore.Builder.FileServerOptions` object that you pass as a parameter to ``UseFileServer``. For example, given the following directory hierarchy in your Web app:
-디렉토리 브라우징을 허용했을 때의 보안 위험에 대해서는 고려사항_ 을 확인하세요. ``UseStaticFiles`` 과 ``UseDefaultFiles``, ``UseDirectoryBrowser`` 메서드와 마찬가지로 ``web root`` 외부의 파일을 제공하길 원한다면, :dn:class:`~Microsoft.AspNetCore.Builder.FileServerOptions` 개체를 생성하고 설정한 뒤에 ``UseFileServer`` 메서드에 매개변수로 전달하세요. 예를 들어, 여러분의 웹 어플리케이션에서 다음과 같은 디렉토리 구조를 사용한다고 해보겠습니다.
+디렉토리 브라우징을 허용했을 때의 보안 위험에 대해서는 Considerations_ 을 확인하세요. ``UseStaticFiles`` 과 ``UseDefaultFiles``, ``UseDirectoryBrowser`` 메서드와 마찬가지로 ``web root`` 외부의 파일을 제공하길 원한다면, :dn:class:`~Microsoft.AspNetCore.Builder.FileServerOptions` 개체를 생성하고 설정한 뒤에 ``UseFileServer`` 메서드에 매개변수로 전달하세요. 예를 들어, 여러분의 웹 어플리케이션에서 다음과 같은 디렉토리 구조를 사용한다고 해보겠습니다.
 
 - wwwroot
 

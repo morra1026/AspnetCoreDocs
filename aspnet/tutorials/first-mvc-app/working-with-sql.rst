@@ -13,7 +13,7 @@ The ``ApplicationDbContext`` class handles the task of connecting to the databas
   :dedent: 8
 
 The ASP.NET Core :doc:`Configuration </fundamentals/configuration>` system reads the ``ConnectionString``. For local development, it gets the connection string from the *appsettings.json* file:
-ASP.NET Core :doc:`Configuration </fundamentals/configuration>` system은 ``ConnectionString``을 읽어 온다. For local development, it gets the connection string from the *appsettings.json* file:
+ASP.NET Core :doc:`Configuration </fundamentals/configuration>` system은 ``ConnectionString`` 을 읽어 온다. For local development, it gets the connection string from the *appsettings.json* file:
 
 .. literalinclude:: start-mvc/sample2/src/MvcMovie/appsettings.json
   :language: javascript
