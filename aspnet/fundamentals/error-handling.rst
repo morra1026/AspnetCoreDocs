@@ -1,4 +1,4 @@
-:version: 1.0.0-rc1
+﻿:version: 1.0.0-rc1
 
 Error Handling
 ==============
@@ -6,12 +6,14 @@ Error Handling
 By `Steve Smith`_
 
 When errors occur in your ASP.NET app, you can handle them in a variety of ways, as described in this article.
+여러분의 ASP.NET 어플리케이션에서 오류가 발생할 경우, 여러가지 방법으로 처리할 수 있습니다.
 
 .. contents:: Sections
 	:local:
 	:depth: 1
 
 `View or download sample code <https://github.com/aspnet/Docs/tree/master/aspnet/fundamentals/error-handling/sample>`_
+`샘플 코드를 확인하거나 다운로드 받으세요. <https://github.com/aspnet/Docs/tree/master/aspnet/fundamentals/error-handling/sample>`_
 
 Configuring an Exception Handling Page
 --------------------------------------
