@@ -1,4 +1,4 @@
-:version: 1.0.0
+ï»¿:version: 1.0.0
 
 Servers
 =======
@@ -6,7 +6,7 @@ Servers
 By `Steve Smith`_ and `Stephen Halter`_
 
 ASP.NET Core is completely decoupled from the web server environment that hosts the application. ASP.NET Core supports hosting in IIS and IIS Express, and self-hosting scenarios using the Kestrel and WebListener HTTP servers. Additionally, developers and third party software vendors can create custom servers to host their ASP.NET Core apps.
-ASP.NET Core´Â applicationÀ» È£½ºÆÃÇÏ´Â web server environment·Î ºÎÅÍ ¿Ïº®ÇÏ°Ô ºĞ¸®µÇ¾ú´Ù. ASP.NET Core´Â IIS¿Í IIS Express¸¦ Áö¿øÇÏ°í Kestrel°ú WebListener HTTP serverµéÀ» »ç¿ëÇÑ ¼¿ÇÁÈ£½ºÆÃµµ °¡´ÉÇÏ´Ù. Ãß°¡ÀûÀ¸·Î, °³¹ßÀÚ¿Í third party software vendorµéÀº ASP.NET Core appµéÀ» È£½ºÆÃÇÏ±â À§ÇØ custom server¸¦ ¸¸µé¼ö ÀÖ´Ù.
+ASP.NET CoreëŠ” applicationì„ í˜¸ìŠ¤íŒ…í•˜ëŠ” web server environmentë¡œ ë¶€í„° ì™„ë²½í•˜ê²Œ ë¶„ë¦¬ë˜ì—ˆë‹¤. ASP.NET CoreëŠ” IISì™€ IIS Expressë¥¼ ì§€ì›í•˜ê³  Kestrelê³¼ WebListener HTTP serverë“¤ì„ ì‚¬ìš©í•œ ì…€í”„í˜¸ìŠ¤íŒ…ë„ ê°€ëŠ¥í•˜ë‹¤. ì¶”ê°€ì ìœ¼ë¡œ, ê°œë°œìì™€ third party software vendorë“¤ì€ ASP.NET Core appë“¤ì„ í˜¸ìŠ¤íŒ…í•˜ê¸° ìœ„í•´ custom serverë¥¼ ë§Œë“¤ìˆ˜ ìˆë‹¤.
 
 .. contents:: Sections:
   :local:
@@ -18,13 +18,13 @@ Servers and WebHostBuilderExtensions
 ------------------------------------
 
 ASP.NET Core was designed to decouple web applications from the underlying HTTP server. Traditionally, ASP.NET apps have been windows-only hosted on Internet Information Server (IIS). The recommended way to run ASP.NET Core applications on Windows is still using IIS, but as a reverse-proxy server. The ASP.NET Core Module in IIS manages and proxies requests to the Kestrel HTTP server hosted out-of-process. ASP.NET Core ships with two different HTTP servers:
-ASP.NET Core´Â underlying HTTP server¿¡¼­ web applicationÀ» ºĞ¸®ÇÏµµ·Ï ¼³°èµÇ¾ú´Ù. ÀüÅëÀûÀ¸·Î, ASP.NET appÀº windows¿¡¼­¸¸ Internet Information Server (IIS)·Î È£½ºÆÃµÆ¾ú´Ù. Windows¿¡¼­ ASP.NET Core applicationÀ» ½ÇÇàÇÏ´Â ¹æ¹ıÀ¸·Î ÃßÃµÇÏ´Â °ÍÀº IIS¸¦ reverse-proxy server·Î »ç¿ëÇÏ´Â °ÍÀÌ´Ù. IISÀÇ ASP.NET Core moduleÀº out-of-process°¡ È£½ºÆÃµÇ´Â Kestrel HTTP server·Î requestµéÀ» °ü¸®ÇÏ°í ´ë¸®ÇÑ´Ù. ASP.NET Core´Â µÎ°³ÀÇ ´Ù¸¥ HTTP server¸¦ Æ÷ÇÔÇÑ´Ù :
+ASP.NET CoreëŠ” underlying HTTP serverì—ì„œ web applicationì„ ë¶„ë¦¬í•˜ë„ë¡ ì„¤ê³„ë˜ì—ˆë‹¤. ì „í†µì ìœ¼ë¡œ, ASP.NET appì€ windowsì—ì„œë§Œ Internet Information Server (IIS)ë¡œ í˜¸ìŠ¤íŒ…ëì—ˆë‹¤. Windowsì—ì„œ ASP.NET Core applicationì„ ì‹¤í–‰í•˜ëŠ” ë°©ë²•ìœ¼ë¡œ ì¶”ì²œí•˜ëŠ” ê²ƒì€ IISë¥¼ reverse-proxy serverë¡œ ì‚¬ìš©í•˜ëŠ” ê²ƒì´ë‹¤. IISì˜ ASP.NET Core moduleì€ out-of-processê°€ í˜¸ìŠ¤íŒ…ë˜ëŠ” Kestrel HTTP serverë¡œ requestë“¤ì„ ê´€ë¦¬í•˜ê³  ëŒ€ë¦¬í•œë‹¤. ASP.NET CoreëŠ” ë‘ê°œì˜ ë‹¤ë¥¸ HTTP serverë¥¼ í¬í•¨í•œë‹¤ :
 
 - Microsoft.AspNetCore.Server.Kestrel (AKA Kestrel, cross-platform)
 - Microsoft.AspNetCore.Server.WebListener (AKA WebListener, Windows-only, preview)
 
 ASP.NET Core does not directly listen for requests, but instead relies on the HTTP server implementation to surface the request to the application as a set of :doc:`feature interfaces <request-features>` composed into an HttpContext. While WebListener is Windows-only, Kestrel is designed to run cross-platform. You can configure your application to be hosted by any of these servers via extension methods on :dn:class:`~Microsoft.AspNetCore.Hosting.WebHostBuilder`.
-ASP.NET Core´Â request¸¦ Á÷Á¢ÀûÀ¸·Î ¼ö½ÅÇÏÁö ¾Ê°í instead relies on the HTTP server implementation to surface the request to the application as a set of :doc:`feature interfaces <request-features>` composed into an HttpContext. While WebListener is Windows-only, Kestrel is designed to run cross-platform. You can configure your application to be hosted by any or all of these servers by specifying commands in your *project.json* file. You can even specify an application entry point for your application, and run it as an executable (using ``dotnet run``) rather than hosting it in a separate process.
+ASP.NET CoreëŠ” requestë¥¼ ì§ì ‘ì ìœ¼ë¡œ ìˆ˜ì‹ í•˜ì§€ ì•Šê³  instead relies on the HTTP server implementation to surface the request to the application as a set of :doc:`feature interfaces <request-features>` composed into an HttpContext. While WebListener is Windows-only, Kestrel is designed to run cross-platform. You can configure your application to be hosted by any or all of these servers by specifying commands in your *project.json* file. You can even specify an application entry point for your application, and run it as an executable (using ``dotnet run``) rather than hosting it in a separate process.
 
 The default web host for ASP.NET apps developed using Visual Studio is IIS Express functioning as a reverse proxy server for Kestrel. The "Microsoft.AspNetCore.Server.Kestrel" and "Microsoft.AspNetCore.Server.IISIntegration" dependencies are included in *project.json* by default, even with the Empty web site template. Visual Studio provides support for multiple profiles. In addition to the default profile for running in IIS Express, the templates include a second profile that executes the app directly relying on Kestrel for self-hosting. You can manage these profiles and their settings in the **Debug** tab of your web application project's Properties menu or from the *launchSettings.json* file.
 
