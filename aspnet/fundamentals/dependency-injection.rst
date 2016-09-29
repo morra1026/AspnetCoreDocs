@@ -7,6 +7,8 @@ Dependency Injection
 
 ASP.NET Core is designed from the ground up to support and leverage dependency injection. ASP.NET Core applications can leverage built-in framework services by having them injected into methods in the Startup class, and application services can be configured for injection as well. The default services container provided by ASP.NET Core provides a minimal feature set and is not intended to replace other containers.
 
+ASP.NET Core는 밑바닥부터 dependency injection을 지원하고 이점을 살리기위해 설계되었다. ASP.NET Core application들은 Startup class 안에서 method들 안으로 주입하여 내장된 framework service들을 강화할 수 있고 application service들 역시 injection을 위해 설정될 수 있다. ASP.NET Core에 의해 제공되는 default services container는 최소한의 기능 셋을 제공한고 other container들로 대체되지 않을 것이다.
+
 .. contents:: Sections:
   :local:
   :depth: 1
@@ -16,9 +18,11 @@ ASP.NET Core is designed from the ground up to support and leverage dependency i
 What is Dependency Injection?
 -----------------------------
 
-Dependency injection (DI) is a technique for achieving loose coupling between objects and their collaborators, or dependencies. Rather than directly instantiating collaborators, or using static references, the objects a class needs in order to perform its actions are provided to the class in some fashion. Most often, classes will declare their dependencies via their constructor, allowing them to follow the `Explicit Dependencies Principle <http://deviq.com/explicit-dependencies-principle/>`_. This approach is known as "constructor injection".
+Dependency injection (DI)은 object들과 collaborator들 사이나 종속성 간에 느슨한 결합(loose coupling)을 이루게하려는 기술이다. Collaborator들을 직접적으로 인스턴스화 하거나 static references를 사용하는 것 보다, the objects a class needs in order to perform its actions are provided to the class in some fashion. 많은 경우, classe들은 `Explicit Dependencies Principle <http://deviq.com/explicit-dependencies-principle/>`_ 을 따라 constructor를 통해 종속성을 선언 할 것이다. 이런 접근은 "constructor injection"으로 알려져 있다..
 
 When classes are designed with DI in mind, they are more loosely coupled because they do not have direct, hard-coded dependencies on their collaborators. This follows the `Dependency Inversion Principle <http://deviq.com/dependency-inversion-principle/>`_, which states that *"high level modules should not depend on low level modules; both should depend on abstractions."* Instead of referencing specific implementations, classes, request abstractions (typically ``interfaces``) which are provided to them when they are constructed. Extracting dependencies into interfaces and providing implementations of these interfaces as parameters is also an example of the `Strategy design pattern <http://deviq.com/strategy-design-pattern/>`_.
+
+Classe들이 DI를 염두해두고 설계되었을 때, collaborator들에 직접적이고 하드코딩된 dependencie들이 없기 때문에 더 느슨하게 결합된다. This follows the `Dependency Inversion Principle <http://deviq.com/dependency-inversion-principle/>`_, which states that *"high level modules should not depend on low level modules; both should depend on abstractions."* Instead of referencing specific implementations, classes, request abstractions (typically ``interfaces``) which are provided to them when they are constructed. Extracting dependencies into interfaces and providing implementations of these interfaces as parameters is also an example of the `Strategy design pattern <http://deviq.com/strategy-design-pattern/>`_.
 
 When a system is designed to use DI, with many classes requesting their dependencies via their constructor (or properties), it's helpful to have a class dedicated to creating these classes with their associated dependencies. These classes are referred to as *containers*, or more specifically, `Inversion of Control (IoC) <http://deviq.com/inversion-of-control/>`_ containers or Dependency Injection (DI) containers. A container is essentially a factory that is responsible for providing instances of types that are requested from it. If a given type has declared that it has dependencies, and the container has been configured to provide the dependency types, it will create the dependencies as part of creating the requested instance. In this way, complex dependency graphs can be provided to classes without the need for any hard-coded object construction. In addition to creating objects with their dependencies, containers typically manage object lifetimes within the application.
 
@@ -33,6 +37,8 @@ Using Framework-Provided Services
 
 The ``ConfigureServices`` method in the ``Startup`` class is responsible for defining the services the application will use, including platform features like Entity Framework Core and ASP.NET Core MVC. Initially, the ``IServiceCollection`` provided to ``ConfigureServices`` has just a handful of services defined. Below is an example of how to add additional services to the container using a number of extension methods like ``AddDbContext``, ``AddIdentity``, and ``AddMvc``.
 
+``Startup`` class안의 ``ConfigureServices`` method는 Entity Framework Core와 ASP.NET Core MVC 같은 platform feature들을 포함해 application이 사용할 service들을 정의할 책임이 있다. 처음에는, ``ConfigureServices``에 단지 몇몇의 service들이 정의된 ``IServiceCollection``가  제공된다. 아래는 ``AddDbContext``, ``AddIdentity``, and ``AddMvc`` 같은 몇가지 extension method들을 사용해서 어떻게 container에 추가적인 service들을 더하는지 보여주는 예제이다.
+
 .. literalinclude:: /../common/samples/WebApplication1/src/WebApplication1/Startup.cs
   :language: c#
   :lines: 39-56
@@ -41,7 +47,10 @@ The ``ConfigureServices`` method in the ``Startup`` class is responsible for def
 
 The features and middleware provided by ASP.NET, such as MVC, follow a convention of using a single Add\ *Service*\  extension method to register all of the services required by that feature. 
 
+ASP.NET에 의해 제공되는 MVC같은 feature들과 middleware는 그 feature가 요구하는 모든 service들을 등록하기 위해 하나의 Add\ *Service*\  extension method를 사용한다는 협약을 따른다.
+
 .. tip:: You can request certain framework-provided services within ``Startup`` methods through their parameter lists - see :doc:`startup` for more details.
+.. tip:: 당신은 ``Startup`` method에서 어떤 framework-provided service들을 그 service들의 parameter list를 통해 요청할 수 있다. - see :doc:`startup` for more details.
 
 Of course, in addition to configuring the application to take advantage of various framework features, you can also use ``ConfigureServices`` to configure your own application services.
 
@@ -50,12 +59,16 @@ Registering Your Own Services
 
 You can register your own application services as follows. The first generic type represents the type (typically an interface) that will be requested from the container. The second generic type represents the concrete type that will be instantiated by the container and used to fulfill such requests.
 
+당신의 application service들을 다음처럼 등록 할 수있다. 첫번째 generic type은 container가 요구하는(일반적으로 interface) type 이다. 두번째 generic type은 container에 의해 인스턴스화 되고 such request들을 수행하는데 사용되는 concrete type이다.
+
 .. literalinclude:: /../common/samples/WebApplication1/src/WebApplication1/Startup.cs
   :language: c#
   :lines: 53-54
   :dedent: 12
 
 .. note:: Each ``services.Add<service>`` call adds (and potentially configures) services. For example, ``services.AddMvc()`` adds the services MVC requires.
+.. note:: 각각의 ``services.Add<service>`` 호출은 service들을 추가한다.(그리고 잠재적으로 구성도). 예를 들어, ``services.AddMvc()`` 는 MVC가 요구하는 service들을 추가 한다.
+
 
 The ``AddTransient`` method is used to map abstract types to concrete services that are instantiated separately for every object that requires it. This is known as the service's *lifetime*, and additional lifetime options are described below. It is important to choose an appropriate lifetime for each of the services you register. Should a new instance of the service be provided to each class that requests it? Should one instance be used throughout a given web request? Or should a single instance be used for the lifetime of the application?
 
