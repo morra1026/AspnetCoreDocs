@@ -5,7 +5,11 @@ Managing Application State
 
 By `Steve Smith`_
 
-In ASP.NET Core, application state can be managed in a variety of ways, depending on when and how the state is to be retrieved. This article provides a brief overview of several options, and focuses on installing and configuring Session state support in ASP.NET Core applications.
+..
+  In ASP.NET Core, application state can be managed in a variety of ways, depending on when and how the state is to be retrieved. This article provides a brief overview of several options, and focuses on installing and configuring Session state support in ASP.NET Core applications.
+
+ASP.NET Core에서, application state는 state가 검색되는 시점과 방법에 따라 다양한 방법으로 관리 될 수 있다. 이 문서는 몇몇 옵션의 간략한 개요를 제공하고,  ASP.NET Core application에서 지원하는 Session state를 사용하는 방법에 촛점을 맞춘다.
+
 
 .. contents:: Sections
   :local:
@@ -16,39 +20,70 @@ In ASP.NET Core, application state can be managed in a variety of ways, dependin
 Application State Options
 -------------------------
 
-`Application state` refers to any data that is used to represent the current representation of the application. This includes both global and user-specific data. Previous versions of ASP.NET (and even ASP) have had built-in support for global ``Application`` and ``Session`` state stores, as well as a variety of other options.
+..
+  `Application state` refers to any data that is used to represent the current representation of the application. This includes both global and user-specific data. Previous versions of ASP.NET (and even ASP) have had built-in support for global ``Application`` and ``Session`` state stores, as well as a variety of other options.
 
-.. note:: The ``Application`` store had the same characteristics as the ASP.NET ``Cache``, with fewer capabilities. In ASP.NET Core, ``Application`` no longer exists; applications written for previous versions of ASP.NET that are migrating to ASP.NET Core replace ``Application`` with a :doc:`/performance/caching/index` implementation. 
+`Application state` 는 application의 현재 상태를 표현하는데 사용되는 data를 의미한다. 이것은 global 과 user-specific data를 모두 포함한다. 이전 버전의 ASP.NET (그리고 ASP)은 전역적인 ``Application`` 과 ``Session`` state 저장소 뿐만 아니라 다양한 다른 옵션을 지원했다
 
-Application developers are free to use different state storage providers depending on a variety of factors:
+..
+  .. note:: The ``Application`` store had the same characteristics as the ASP.NET ``Cache``, with fewer capabilities. In ASP.NET Core, ``Application`` no longer exists; applications written for previous versions of ASP.NET that are migrating to ASP.NET Core replace ``Application`` with a :doc:`/performance/caching/index` implementation.
 
-- How long does the data need to persist?
-- How large is the data?
-- What format is the data?
-- Can it be serialized?
-- How sensitive was the data? Could it be stored on the client?
+.. note:: ``Application`` 저장소는 had the same characteristics as the ASP.NET ``Cache``, with fewer capabilities. In ASP.NET Core, ``Application`` no longer exists; applications written for previous versions of ASP.NET that are migrating to ASP.NET Core replace ``Application`` with a :doc:`/performance/caching/index` implementation.  
 
-Based on answers to these questions, application state in ASP.NET Core apps can be stored or managed in a variety of ways.
+..
+  Application developers are free to use different state storage providers depending on a variety of factors:
+
+Application 개발자는 다양한 요인에의해 다른 state storage providers를 사용한다 :
+
+..
+  - How long does the data need to persist?
+  - How large is the data?
+  - What format is the data?
+  - Can it be serialized?
+  - How sensitive was the data? Could it be stored on the client?
+
+- 데이터가 얼마나 오래 지속되야 하는지?
+- 데이터가 얼마나 큰지?
+- 데이터가 어떤 형식인지?
+- 직렬화 가능한지?
+- 데이터가 얼마나 중요한지?(클라이언트에 보관 가능한지?)
+
+..
+  Based on answers to these questions, application state in ASP.NET Core apps can be stored or managed in a variety of ways.
+
+이 질문들에 기반하여, ASP.NET Core app들의 application state는 다양한 방법으로 저장되고 관리될 수 있다.
 
 HttpContext.Items
 ^^^^^^^^^^^^^^^^^
 
-The ``Items`` collection is the best location to store data that is only needed while processing a given request. Its contents are discarded after each request. It is best used as a means of communicating between components or middleware that operate at different points in time during a request, and have no direct relationship with one another through which to pass parameters or return values. See `Working with HttpContext.Items`_, below.
+..
+  The ``Items`` collection is the best location to store data that is only needed while processing a given request. Its contents are discarded after each request. It is best used as a means of communicating between components or middleware that operate at different points in time during a request, and have no direct relationship with one another through which to pass parameters or return values. See `Working with HttpContext.Items`_, below.
+
+``Items`` collection은 주어진 request을 처리하는 동안에만 필요한 데이터를 저장하는데 최적의 장소이다. ``Items`` collection의 내용은 각 request 처리 후에 폐기된다. It is best used as a means of communicating between components or middleware that operate at different points in time during a request, and have no direct relationship with one another through which to pass parameters or return values. See `Working with HttpContext.Items`_, below.
 
 QueryString and Post
 ^^^^^^^^^^^^^^^^^^^^
 
-State from one request can be provided to another request by adding values to the new request's query string or by POSTing the data. These techniques should not be used with sensitive data, because these techniques require that the data be sent to the client and then sent back to the server. It is also best used with small amounts of data. Query strings are especially useful for capturing state in a persistent manner, allowing links with embedded state to be created and sent via email or social networks, for use potentially far into the future. However, no assumption can be made about the user making the request, since URLs with query strings can easily be shared, and care must also be taken to avoid `Cross-Site Request Forgery (CSRF) <https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)>`_ attacks (for instance, even assuming only authenticated users are able to perform actions using query string based URLs, an attacker could trick a user into visiting such a URL while already authenticated).
+..
+  State from one request can be provided to another request by adding values to the new request's query string or by POSTing the data. These techniques should not be used with sensitive data, because these techniques require that the data be sent to the client and then sent back to the server. It is also best used with small amounts of data. Query strings are especially useful for capturing state in a persistent manner, allowing links with embedded state to be created and sent via email or social networks, for use potentially far into the future. However, no assumption can be made about the user making the request, since URLs with query strings can easily be shared, and care must also be taken to avoid `Cross-Site Request Forgery (CSRF) <https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)>`_ attacks (for instance, even assuming only authenticated users are able to perform actions using query string based URLs, an attacker could trick a user into visiting such a URL while already authenticated).
+  
+한 request의 State는 새로운 request의 query string에 값을 추가하거나 data를 POSTing 하여 다른 request로 제공될 수 있다. 이런 기법들은 data를 client로 보낸후 server로 돌려받기 때문에 민감한 data에는 사용하면 안된다. 이것은 작은 양의 data에 사용하기 좋다. Query string은 특히 state를 영구적으로 저장하는데 유용한데, 나중에 사용하기 위한 state를 포함한 link를 만들고 email 또는 social network를 통해 보낼 수 있게 한다. However, no assumption can be made about the user making the request, since URLs with query strings can easily be shared, and care must also be taken to avoid `Cross-Site Request Forgery (CSRF) <https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)>`_ attacks (for instance, even assuming only authenticated users are able to perform actions using query string based URLs, an attacker could trick a user into visiting such a URL while already authenticated).
 
 Cookies
 ^^^^^^^
 
-Very small pieces of state-related data can be stored in Cookies. These are sent with every request, and so the size should be kept to a minimum. Ideally, only an identifier should be used, with the actual data stored somewhere on the server, keyed to the identifier.
+..
+  Very small pieces of state-related data can be stored in Cookies. These are sent with every request, and so the size should be kept to a minimum. Ideally, only an identifier should be used, with the actual data stored somewhere on the server, keyed to the identifier.
+
+상태와 관련된 아주 작은 조각의 데이터는 Cookie에 저장될 수 있다. 쿠키는 모든 request에 보내지므로, 크기가 최소로 유지되어야 한다. 이상적으로, 오직 server의 어딘가에 저장된 실제 데이터를 가르키는 identifier로 사용된어야 한다.
 
 Session
 ^^^^^^^
 
-Session storage relies on a cookie-based identifier to access data related to a given browser session (a series of requests from a particular browser and machine). You can't necessarily assume that a session is restricted to a single user, so be careful what kind of information you store in Session. It is a good place to store application state that is specific to a particular session but which doesn't need to be persisted permanently (or which can be reproduced as needed from a persistent store). See `Installing and Configuring Session`_, below for more details.
+..
+  Session storage relies on a cookie-based identifier to access data related to a given browser session (a series of requests from a particular browser and machine). You can't necessarily assume that a session is restricted to a single user, so be careful what kind of information you store in Session. It is a good place to store application state that is specific to a particular session but which doesn't need to be persisted permanently (or which can be reproduced as needed from a persistent store). See `Installing and Configuring Session`_, below for more details.
+
+Session storage는 주어진 browser session(특정한 browser와 machine으로 부터 연속된 request들)과 관련된 데이터에 접근하기 위해 cookie 기반의 identifier에 의존한다. Session은 단일 사용자로 확신할 수 없으므로, Session에 어떤 정보를 저장할 때 주의해야 한다. Session은 영구적이지 않고 세션 별 application state를 저장하기에 좋은 장소이다.(또는 which can be reproduced as needed from a persistent store). See `Installing and Configuring Session`_, below for more details.
 
 Cache
 ^^^^^
@@ -68,7 +103,10 @@ Any other form of persistent storage, whether using Entity Framework and a datab
 Working with HttpContext.Items
 ------------------------------
 
-The ``HttpContext`` abstraction provides support for a simple dictionary collection of type ``IDictionary<object, object>``, called ``Items``. This collection is available from the start of an `HttpRequest`` and is discarded at the end of each request. You can access it by simply assigning a value to a keyed entry, or by requesting the value for a given key.
+..
+  The ``HttpContext`` abstraction provides support for a simple dictionary collection of type ``IDictionary<object, object>``, called ``Items``. This collection is available from the start of an `HttpRequest`` and is discarded at the end of each request. You can access it by simply assigning a value to a keyed entry, or by requesting the value for a given key.
+
+``HttpContext`` abstraction은 ``Items`` 이라고 불리는 ``IDictionary<object, object>`` 형식의 간단한 dictionary collection을 제공한다. 이 collection은 available from the start of an `HttpRequest` 의 시작부터 사용가능하고 각 request의 마지막에 폐기된다. You can access it by simply assigning a value to a keyed entry, or by requesting the value for a given key.
 
 For example, some simple :doc:`middleware` could add something to the ``Items`` collection:
 
@@ -97,7 +135,10 @@ and later in the pipeline, another piece of middleware could access it:
 Installing and Configuring Session
 ----------------------------------
 
-ASP.NET Core ships a session package that provides middleware for managing session state. You can install it by including a reference to the ``Microsoft.AspNetCore.Session`` package in your project.json file.
+..
+  ASP.NET Core ships a session package that provides middleware for managing session state. You can install it by including a reference to the ``Microsoft.AspNetCore.Session`` package in your project.json file.
+
+ASP.NET Core는  session state를 관리하기 위한 middleware를 제공하는 session package를 포함하고 있다. project.json file에 ``Microsoft.AspNetCore.Session`` package를 참조로 포함시켜서 사용할 수 있다..
 
 Once the package is installed, Session must be configured in your application's ``Startup`` class. Session is built on top of ``IDistributedCache``, so you must configure this as well, otherwise you will receive an error.
 
