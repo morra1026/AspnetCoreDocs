@@ -140,6 +140,9 @@ Installing and Configuring Session
 
 ASP.NET Core는  session state를 관리하기 위한 middleware를 제공하는 session package를 포함하고 있다. project.json file에 ``Microsoft.AspNetCore.Session`` package를 참조로 포함시켜서 사용할 수 있다..
 
+..
+  Once the package is installed, Session must be configured in your application's ``Startup`` class. Session is built on top of ``IDistributedCache``, so you must configure this as well, otherwise you will receive an error.
+
 Once the package is installed, Session must be configured in your application's ``Startup`` class. Session is built on top of ``IDistributedCache``, so you must configure this as well, otherwise you will receive an error.
 
 .. note:: If you do not configure at least one ``IDistributedCache`` implementation, you will get an exception stating "Unable to resolve service for type 'Microsoft.Extensions.Caching.Distributed.IDistributedCache' while attempting to activate 'Microsoft.AspNetCore.Session.DistributedSessionStore'."
